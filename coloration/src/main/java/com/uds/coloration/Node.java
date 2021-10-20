@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Node {
 	public ArrayList<Node> neighbors;
-	public ColorsEnum color;
+	public int color;
 	public String value;
 
 	public Node(String name) {
-		this.color = ColorsEnum.Red;
+		this.color = 0;
 		this.value = name;
 		this.neighbors = new ArrayList<Node>();
 	}
@@ -24,16 +24,16 @@ public class Node {
 	 */
 	public void setColor(int nbColor) {
 		boolean isValid = true;
-		int i = 0;
-		while (i < nbColor) {
+		int i = 1;
+		while (i <= nbColor) {
 			for (Node neighbor : this.neighbors) {
-				if (neighbor.color == ColorsEnum.values()[i]) {
+				if (neighbor.color == i) {
 					isValid = false;
 				}
 			}
 
 			if (isValid) {
-				this.color = ColorsEnum.values()[i];
+				this.color = i;
 			}
 
 			i++;

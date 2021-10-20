@@ -8,10 +8,10 @@ public class Main {
 
 	public static void colorate(Graph g, int nbColors) {
 		if (g.nodes.size() == 1) {
-			g.nodes.get(0).color = ColorsEnum.values()[1];
+			g.nodes.get(0).color = 1;
 		} else {
 			for (Node node : g.nodes) {
-				if (node.color == ColorsEnum.values()[0] && node.neighbors.size() < nbColors) {
+				if (node.color == 0 && node.neighbors.size() < nbColors) {
 					colorate(new Graph(g.nodes, node.value), nbColors);
 					node.setColor(nbColors);
 
@@ -24,13 +24,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Scanner sc = new Scanner(System.in);
-		
-		File f = new File(sc.next());
-		
-		
-		
-		
+//		Scanner sc = new Scanner(System.in);
+//		
+//		File f = new File(sc.next());
+//		
 		Node r1 = new Node("Bretagne");
 		Node r2 = new Node("Normandie");
 		Node r3 = new Node("Nord-Pas-de-Calais et Picardie");
@@ -122,13 +119,61 @@ public class Main {
 		nodes.add(r13);
 
 		Graph g1 = new Graph(nodes);
+		Graph g2 = new Graph(nodes);
 
-		colorate(g1, 4);
-
+		//colorate(g1, 4);
+		colorateNaive(g1, 4);
+		
 		for (Node node : g1.nodes) {
 			System.out.println("Région " + (g1.nodes.indexOf(node) + 1) + " : " + node.value + " \t Couleur : "
-					+ node.color.toString());
+					+ node.color);
 		}
 	}
-
+	
+	
+ public static void colorateNaive(Graph g, int nbColors)
+ {
+	 int i = 0, colorValue = 1;
+	 
+	 while (i < g.nodes.size()) {
+		 
+		 Node n = g.nodes.get(i);
+		 
+		 while (n.color == 0 && colorValue <= nbColors) {
+			 
+			 if (isValidColor(n, colorValue)) {
+				 n.color = colorValue;
+				 colorValue = 1;
+			 } else {
+				 colorValue++;
+			 }
+		 }
+		 
+		 if (n.color == 0) {
+			 if (i > 0) {
+				 i--;
+			 }
+			 
+			 colorValue = n.color + 1;
+			 n.color = 0;
+		 }else {
+			 
+			 i++;
+		 }
+	 }
+ }
+ 
+ public static boolean isValidColor(Node n, int colorValue)
+ {
+	 for (Node neighbor : n.neighbors) {
+				 
+		 if (neighbor.color == colorValue) {
+			 return false;
+		 }
+	 }
+	 
+	return true;
+	 
+ }
+ 
 }
