@@ -13,6 +13,7 @@ public class Node {
 		this.neighbors = new ArrayList<Node>();
 	}
 
+	
 	public void addNeighbor(Node node) {
 		this.neighbors.add(node);
 	}

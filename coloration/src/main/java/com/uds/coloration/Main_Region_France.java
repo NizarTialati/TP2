@@ -1,10 +1,8 @@
 package com.uds.coloration;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Main {
+public class Main_Region_France {
 
 	public static void colorate(Graph g, int nbColors) {
 		if (g.nodes.size() == 1) {
@@ -23,11 +21,17 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+<<<<<<< HEAD:coloration/src/main/java/com/uds/coloration/Main.java
 		
 //		Scanner sc = new Scanner(System.in);
 //		
 //		File f = new File(sc.next());
 //		
+=======
+
+		/** Graphe avec les régions de France **/
+		
+>>>>>>> e2b8c09a8f5fb48d9a2557502df00e9773fbb32d:coloration/src/main/java/com/uds/coloration/Main_Region_France.java
 		Node r1 = new Node("Bretagne");
 		Node r2 = new Node("Normandie");
 		Node r3 = new Node("Nord-Pas-de-Calais et Picardie");
@@ -121,14 +125,33 @@ public class Main {
 		Graph g1 = new Graph(nodes);
 		Graph g2 = new Graph(nodes);
 
+<<<<<<< HEAD:coloration/src/main/java/com/uds/coloration/Main.java
 		//colorate(g1, 4);
 		colorateNaive(g1, 4);
 		
 		for (Node node : g1.nodes) {
 			System.out.println("Région " + (g1.nodes.indexOf(node) + 1) + " : " + node.value + " \t Couleur : "
 					+ node.color);
-		}
+=======
+		colorate(g1, 4);
+
+		printGraph(g1);
+		
+		
 	}
+
+	private static void printGraph(Graph g1){
+		
+		// On affiche le resultat dans la console et puis on l'écris dans un fichier 
+		for (Node node : g1.nodes) {
+			String s = "Region " + node.value + "\t=====================> Couleur : "
+					+ (node.color+1);
+			System.out.println(s);
+>>>>>>> e2b8c09a8f5fb48d9a2557502df00e9773fbb32d:coloration/src/main/java/com/uds/coloration/Main_Region_France.java
+		}
+		
+	}
+<<<<<<< HEAD:coloration/src/main/java/com/uds/coloration/Main.java
 	
 	
  public static void colorateNaive(Graph g, int nbColors)
@@ -176,4 +199,8 @@ public class Main {
 	 
  }
  
+=======
+
+	
+>>>>>>> e2b8c09a8f5fb48d9a2557502df00e9773fbb32d:coloration/src/main/java/com/uds/coloration/Main_Region_France.java
 }

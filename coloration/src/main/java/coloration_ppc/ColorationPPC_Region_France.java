@@ -16,7 +16,7 @@ import com.uds.coloration.ColorsEnum;
 import static org.chocosolver.solver.search.strategy.Search.minDomLBSearch;
 import static org.chocosolver.util.tools.ArrayUtils.append;
 
-public class ColorationPPC {
+public class ColorationPPC_Region_France {
 
 	static int n;
 	static int s;
@@ -47,7 +47,7 @@ public class ColorationPPC {
 
 		n = 13;
 
-		new ColorationPPC().solve();
+		new ColorationPPC_Region_France().solve();
 	}
 
 	public void solve() {
