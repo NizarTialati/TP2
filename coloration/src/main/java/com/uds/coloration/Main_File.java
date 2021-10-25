@@ -12,7 +12,12 @@ import java.util.Scanner;
 import org.apache.commons.io.FilenameUtils;
 
 public class Main_File {
-
+	
+	/**
+	 * Algrothme D-SATUR
+	 * @param g
+	 * @param nbColors
+	 */
 	public static void colorate(Graph g, int nbColors) {
 		if (g.nodes.size() == 1) {
 			g.nodes.get(0).color = 1;
@@ -27,6 +32,56 @@ public class Main_File {
 
 		}
 	}
+	
+	/**
+	 * Algorithme naif
+	 * @param g
+	 * @param nbColors
+	 */
+	
+	public static void colorateNaive(Graph g, int nbColors) {
+		int i = 0, colorValue = 1;
+
+		while (i < g.nodes.size()) {
+
+			Node n = g.nodes.get(i);
+			System.out.println(n.value);
+			while (n.color == 0 && colorValue <= nbColors) {
+
+				if (isValidColor(n, colorValue)) {
+					n.color = colorValue;
+					colorValue = 1;
+				} else {
+					colorValue++;
+				}
+			}
+
+			if (n.color == 0) {
+				if (i > 0) {
+					i--;
+				}
+
+				colorValue = n.color + 1;
+				n.color = 0;
+			} else {
+
+				i++;
+			}
+		}
+	}
+
+	public static boolean isValidColor(Node n, int colorValue) {
+		for (Node neighbor : n.neighbors) {
+
+			if (neighbor.color == colorValue) {
+				return false;
+			}
+		}
+
+		return true;
+
+	}
+	
 
 	public static void main(String[] args) {
 
@@ -106,7 +161,7 @@ public class Main_File {
 			Graph graph = new Graph(nodes);
 
 			// On colorie le graphe
-			colorate(graph, nbColors);
+			colorateNaive(graph, nbColors);
 
 			// On affiche le graphe et on enregistre le resultat dans un fichier
 			printGraph(graph, fileName, dirName);
