@@ -23,18 +23,25 @@ public class Node {
 	 * 
 	 * @param nbColor Le nombre de couleurs.
 	 */
-	public void setColor(int nbColor) {
+	public void setColor(int nbColor)
+	{
 		boolean isValid = true;
 		int i = 1;
-		while (i <= nbColor) {
-			for (Node neighbor : this.neighbors) {
-				if (neighbor.color == i) {
+		
+		while (i <= nbColor)
+		{
+			for (Node neighbor : this.neighbors)
+			{
+				if (neighbor.color == i)
+				{
 					isValid = false;
 				}
 			}
 
-			if (isValid) {
+			if (isValid)
+			{
 				this.color = i;
+				break;
 			}
 
 			i++;

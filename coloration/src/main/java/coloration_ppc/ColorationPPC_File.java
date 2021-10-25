@@ -49,12 +49,12 @@ public class ColorationPPC_File {
 			checkOption(line, opt.getLongOpt());
 		}
 
-		System.out.println("Veuillez entrez le chemin de votre fichier contenant le graphe : ");
+		System.out.println("Veuillez entrer le chemin de votre fichier contenant le graphe : ");
 		Scanner sc = new Scanner(System.in);
 
 		String fileName = sc.nextLine();
 
-		System.out.println("Veuillez entrez le chemin du dossier dans lequel les résultats seront stockés : ");
+		System.out.println("Veuillez entrer le chemin du dossier dans lequel les résultats seront stockés : ");
 		String dirName = sc.nextLine();
 
 		BufferedReader file = new BufferedReader(new FileReader(fileName));

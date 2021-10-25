@@ -1,202 +1,143 @@
 package com.uds.coloration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.io.FilenameUtils;
 
 public class Main_File {
 	
+	public static void main(String[] args)
+	{
+		System.out.println("Veuillez entrer le nom du fichier contenant le graphe : ");
+		Scanner sc = new Scanner(System.in);
+
+		String fileName = sc.nextLine();
+		sc.close();
+		
+		Graph graph = new Graph(fileName);
+
+		// Coloration du graphe
+		//colorate(graph, graph.expectedColorNumber);
+		colorateNaive(graph, graph.expectedColorNumber);
+
+		// Affichage du graphe et enregistrement du resultat dans un fichier
+		printGraph(graph, fileName);
+	}
+	
 	/**
 	 * Algrothme D-SATUR
-	 * @param g
-	 * @param nbColors
+	 * @param g Le graphe.
+	 * @param nbColors Le nombre de couleurs.
 	 */
-	public static void colorate(Graph g, int nbColors) {
-		if (g.nodes.size() == 1) {
+	public static void colorate(Graph g, int nbColors)
+	{
+		if (g.nodes.size() == 1)
+		{
 			g.nodes.get(0).color = 1;
-		} else {
-			for (Node node : g.nodes) {
-				if (node.color == 0 && node.neighbors.size() < nbColors) {
+		} 
+		else
+		{
+			for (Node node : g.nodes)
+			{
+				if (node.color == 0)
+				{
 					colorate(new Graph(g.nodes, node.value), nbColors);
 					node.setColor(nbColors);
 				}
-				
 			}
-
 		}
 	}
 	
 	/**
-	 * Algorithme naif
-	 * @param g
-	 * @param nbColors
+	 * Algorithme naïf
+	 * @param g Le graphe.
+	 * @param nbColors Le nombre de couleurs.
 	 */
-	
-	public static void colorateNaive(Graph g, int nbColors) {
+	public static void colorateNaive(Graph g, int nbColors) 
+	{
 		int i = 0, colorValue = 1;
 
-		while (i < g.nodes.size()) {
-
+		while (i < g.nodes.size())
+		{
 			Node n = g.nodes.get(i);
-			System.out.println(n.value);
-			while (n.color == 0 && colorValue <= nbColors) {
 
-				if (isValidColor(n, colorValue)) {
+			while (n.color == 0 && colorValue <= nbColors)
+			{
+				if (isValidColor(n, colorValue))
+				{
 					n.color = colorValue;
 					colorValue = 1;
-				} else {
+				} 
+				else 
+				{
 					colorValue++;
 				}
 			}
 
-			if (n.color == 0) {
-				if (i > 0) {
+			if (n.color == 0)
+			{
+				if (i > 0)
+				{
 					i--;
 				}
 
-				colorValue = n.color + 1;
-				n.color = 0;
-			} else {
-
+				colorValue = g.nodes.get(i).color + 1;
+				g.nodes.get(i).color = 0;
+			} 
+			else
+			{
 				i++;
 			}
 		}
 	}
 
-	public static boolean isValidColor(Node n, int colorValue) {
-		for (Node neighbor : n.neighbors) {
-
-			if (neighbor.color == colorValue) {
+	/**
+	 * Vérifie qu'une couleur est valide.
+	 * @param n Le sommet.
+	 * @param colorValue La couleur.
+	 */
+	public static boolean isValidColor(Node n, int colorValue)
+	{
+		for (Node neighbor : n.neighbors)
+		{
+			if (neighbor.color == colorValue)
+			{
 				return false;
 			}
 		}
 
 		return true;
-
 	}
-	
 
-	public static void main(String[] args) {
+	/**
+	 * Affiche le graphe et l'enregistre dans le dossier prévu.
+	 * @param g1 Le graphe.
+	 * @param filename Le nom du fichier.
+	 */
+	private static void printGraph(Graph g1, String filename)
+	{
+		try
+		{
+			String rootDir = System.getProperty("user.dir");
+			filename = FilenameUtils.getBaseName(filename);
 
-		try {
+			FileWriter file = new FileWriter(rootDir + "\\Generated_Graph\\" + filename + "_generated.txt", false);
 
-			System.out.println("Veuillez entrez le chemin de votre fichier contenant le graphe : ");
-			Scanner sc = new Scanner(System.in);
-
-			String fileName = sc.nextLine();
-
-			System.out.println("Veuillez entrez le chemin du dossier dans lequel les résultats seront stockés : ");
-			String dirName = sc.nextLine();
-
-			BufferedReader file = new BufferedReader(new FileReader(fileName));
-
-			String line = file.readLine();
-			
-			// /home/tialati/Master_2/IA_GL/coloration/datasets/g1.col
-
-			// /home/tialati/Master_2/IA_GL/coloration/Generated_Graph
-
-			int nbColors = 0, nbNodes;
-			ArrayList<Node> nodes = new ArrayList<>();
-
-			while (line != null) {
-
-				// On vérifie qu'il existe un "@" dans la ligne
-				if (line.contains("@ ")) {
-
-					// On retirer les espaces pour récupérer le nombre de sommet et le nombre de
-					// couleurs
-					String[] tab = line.split(" ");
-
-					nbNodes = Integer.parseInt(tab[1]);
-					nbColors = Integer.parseInt(tab[2]);
-
-					System.out.println(nbColors);
-					// On crée la liste de sommets
-					for (int i = 0; i < nbNodes; i++) {
-						nodes.add(new Node(Integer.toString(i + 1)));
-					}
-
-				}
-
-				line = file.readLine();
-
-				if (line == null)
-					break;
-
-				// On retirer les espaces pour récupérer les sommets
-				String[] tab = line.split(" ");
-				
-				if (tab.length == 2 && !tab[0].contains("c")) {
-					
-					for (Node n1 : nodes) {
-
-						if (n1.value.equals(tab[0])) {
-							
-							for (Node n2 : nodes) {
-
-								if (n2.value.equals(tab[1])) {
-									// On ajoute le voisin du sommet en question
-									n1.addNeighbor(n2);
-									n2.addNeighbor(n1);
-								}
-							}
-						}
-					}
-				}
-
+			// Affichage du resultat dans la console et écriture dans un fichier
+			for (Node node : g1.nodes) {
+				String s = "Sommet " + node.value + "\t ======> Couleur : " + (node.color);
+				System.out.println(s);
+				file.write(s + "\n");
 			}
 
-			// Fermeture du fichier
+			System.out.println("Fichier '" + filename + "_generated.txt' généré avec succès ! ");
 			file.close();
-
-			// On crée le graphe avec la liste des sommets
-			Graph graph = new Graph(nodes);
-
-			// On colorie le graphe
-			colorateNaive(graph, nbColors);
-
-			// On affiche le graphe et on enregistre le resultat dans un fichier
-			printGraph(graph, fileName, dirName);
-
-		} catch (Exception e) {
-			System.out.println("Error : ");
+		}
+		catch(Exception e) 
+		{
+			System.out.println("Erreur d'enregistrement du résultat : " + e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
-
-	private static void printGraph(Graph g1, String filename, String dirName) throws IOException {
-
-		// On ajoute le "/" ou "\\" à la fin du dossier chemin si jamais l'utilisateur
-		// ne l'a pas précisé
-		if (dirName.charAt(dirName.length() - 1) != '/' && dirName.contains("/")) {
-			dirName += "/";
-
-		} else if (dirName.charAt(dirName.length() - 1) != '\\' && dirName.contains("\\")) {
-			dirName += "\\";
-		}
-
-		filename = FilenameUtils.getBaseName(filename);
-
-		FileWriter file = new FileWriter(dirName + filename + "_generated.txt", false);
-
-		// On affiche le resultat dans la console et puis on l'écris dans un fichier
-		for (Node node : g1.nodes) {
-			String s = "Sommet " + node.value + "\t ======> Couleur : " + (node.color + 1);
-			System.out.println(s);
-			file.write(s + "\n");
-		}
-
-		System.out.println("Fichier '" + filename + "_generated.txt' généré avec succès ! ");
-		file.close();
-	}
-
 }

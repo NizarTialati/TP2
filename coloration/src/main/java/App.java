@@ -1,19 +1,21 @@
-import java.util.ArrayList;
+import java.io.IOException;
 
 import org.apache.commons.cli.ParseException;
 
-import com.uds.coloration.Graph;
 import com.uds.coloration.Main_File;
-import com.uds.coloration.Main_Region_France;
-import com.uds.coloration.Node;
 
-import coloration_ppc.ColorationPPC_Region_France;
+import coloration_ppc.ColorationPPC_File;
 
 public class App {
 
 	public static void main(String[] args) throws ParseException {
 		long start = System.currentTimeMillis();
-		ColorationPPC_Region_France.main(null);
+		try {
+			ColorationPPC_File.main(null);
+		} catch (ParseException | IOException e) {
+			System.out.println("Erreur ");
+			e.printStackTrace();
+		}
 		
 		long end = System.currentTimeMillis();
 
@@ -22,7 +24,7 @@ public class App {
 		// Notre solution
 
 		start = System.currentTimeMillis();
-		Main_Region_France.main(null);
+		Main_File.main(null);
 		end = System.currentTimeMillis();
 
 		System.out.println("Temps d'exécution de l'algorithme D-Sature : " + (end - start) + "ms");
