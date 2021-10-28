@@ -20,7 +20,7 @@ public class CompareRegions {
 		
 		// Algorithme D-Sature
 		start = System.currentTimeMillis();
-		Coloration.findNaiveSolution(fileName);
+		Coloration.findDSatureSolution(fileName);
 		end = System.currentTimeMillis();
 		System.out.println("Temps d'exécution de l'algorithme D-Sature : " + (end - start) + "ms");
 		
