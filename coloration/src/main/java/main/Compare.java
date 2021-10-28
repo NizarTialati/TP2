@@ -21,13 +21,13 @@ public class Compare {
 		long start = System.currentTimeMillis();
 		ColorationPPC.findSolutionPPC(fileName);
 		long end = System.currentTimeMillis();
-		System.out.println("Temps d'exécution du solver choco : " + (end - start) + "ms");
+		System.out.println("Temps d'exécution du solver choco : " + (end - start) + "ms\n");
 		
 		// Algorithme D-Sature
 		start = System.currentTimeMillis();
-		Coloration.findNaiveSolution(fileName);
+		Coloration.findDSatureSolution(fileName);
 		end = System.currentTimeMillis();
-		System.out.println("Temps d'exécution de l'algorithme D-Sature : " + (end - start) + "ms");
+		System.out.println("Temps d'exécution de l'algorithme D-Sature : " + (end - start) + "ms\n");
 		
 		// Algorithme naïf
 		start = System.currentTimeMillis();

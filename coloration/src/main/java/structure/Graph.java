@@ -4,19 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class Graph
-{
+public class Graph {
 	public ArrayList<Node> nodes;
-	
+
 	public int expectedColorNumber;
 
-	public Graph(ArrayList<Node> nodes)
-	{
+	public Graph(ArrayList<Node> nodes) {
 		this.nodes = new ArrayList<Node>(nodes);
 	}
 
-	public Graph(ArrayList<Node> nodes, String nodeToRemoveValue)
-	{
+	public Graph(ArrayList<Node> nodes, String nodeToRemoveValue) {
 		this.nodes = new ArrayList<Node>(nodes);
 
 		Node nodeToRemove = null;
@@ -33,55 +30,54 @@ public class Graph
 
 		this.nodes.remove(nodeToRemove);
 	}
-	
-	public Graph(String fileName)
-	{
-		try
-		{
+
+	public Graph(String fileName) {
+		try {
 			String rootDir = System.getProperty("user.dir");
-			BufferedReader file = new BufferedReader(new FileReader(rootDir + "\\datasets\\" + fileName));
-	
+
+			String path = "";
+
+			if (rootDir.contains("/")) {
+				path += rootDir + "/datasets/" + fileName;
+			} else {
+				path += rootDir + "\\datasets\\" + fileName;
+			}
+			BufferedReader file = new BufferedReader(new FileReader(path));
+
 			String line = file.readLine();
-	
+			int countConstraints = 0;
 			int nbNodes;
 			ArrayList<Node> nodes = new ArrayList<>();
-	
-			while (line != null)
-			{
+
+			while (line != null) {
 				// Gestion d'une ligne de définition du domaine
-				if (line.contains("@ "))
-				{
+				if (line.contains("@ ")) {
 					// Récupération du nombre de sommets et du nombre de couleurs
 					String[] tab = line.split(" ");
-	
+
 					nbNodes = Integer.parseInt(tab[1]);
 					this.expectedColorNumber = Integer.parseInt(tab[2]);
-	
+
 					System.out.println("Nombre de sommet  : " + nbNodes + ".");
 					System.out.println("Nombre de couleurs  : " + this.expectedColorNumber + ".");
 
 					// Création de la liste des sommets
-					for (int i = 0; i < nbNodes; i++)
-					{
+					for (int i = 0; i < nbNodes; i++) {
 						nodes.add(new Node(Integer.toString(i + 1)));
 					}
-				}
-				else
-				{
+				} else {
+					
 					// Récupération des sommets
 					String[] summits = line.split(" ");
 					boolean isHeader = summits[0].contains("c");
-					
-					if (summits.length == 2 && !isHeader)
-					{
-						for (Node n1 : nodes)
-						{
-							if (n1.value.equals(summits[0]))
-							{
+
+					if (summits.length == 2 && !isHeader) {
+						countConstraints++;
+						for (Node n1 : nodes) {
+							if (n1.value.equals(summits[0])) {
 								for (Node n2 : nodes) {
-		
-									if (n2.value.equals(summits[1]))
-									{
+
+									if (n2.value.equals(summits[1])) {
 										// Ajout du voisinage
 										n1.addNeighbor(n2);
 										n2.addNeighbor(n1);
@@ -91,19 +87,19 @@ public class Graph
 						}
 					}
 				}
-	
+
 				line = file.readLine();
 			}
-	
+
+			System.out.println("Nombre de contraintes : " + countConstraints);
+
 			// Fermeture du fichier
 			file.close();
-	
+
 			// Ajout des sommets au graphe
 			this.nodes = nodes;
 
-		} 
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("Erreur de création du graphe : " + e.getMessage());
 			e.printStackTrace();
 		}
