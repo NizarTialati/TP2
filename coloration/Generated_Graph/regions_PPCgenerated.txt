@@ -1,0 +1,13 @@
+Sommet 1	=====================> Couleur : 3
+Sommet 2	=====================> Couleur : 1
+Sommet 3	=====================> Couleur : 4
+Sommet 4	=====================> Couleur : 2
+Sommet 5	=====================> Couleur : 3
+Sommet 6	=====================> Couleur : 1
+Sommet 7	=====================> Couleur : 3
+Sommet 8	=====================> Couleur : 2
+Sommet 9	=====================> Couleur : 1
+Sommet 10	=====================> Couleur : 2
+Sommet 11	=====================> Couleur : 3
+Sommet 12	=====================> Couleur : 1
+Sommet 13	=====================> Couleur : 2

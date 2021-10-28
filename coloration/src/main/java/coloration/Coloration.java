@@ -1,92 +1,94 @@
-package com.uds.coloration;
+package coloration;
 
 import java.io.FileWriter;
-import java.util.Scanner;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class Main_File {
-	
-	public static void main(String[] args)
-	{
-		System.out.println("Veuillez entrer le nom du fichier contenant le graphe : ");
-		Scanner sc = new Scanner(System.in);
+import structure.Graph;
+import structure.Node;
 
-		String fileName = sc.nextLine();
-		sc.close();
+public class Coloration {
+
+	/**
+	 * Recherche une solution un algorithme naïf.
+	 * @param fileName Le nom du fichier.
+	 */
+	public static void findNaiveSolution(String fileName) {
 		
 		Graph graph = new Graph(fileName);
 
 		// Coloration du graphe
-		//colorate(graph, graph.expectedColorNumber);
 		colorateNaive(graph, graph.expectedColorNumber);
 
 		// Affichage du graphe et enregistrement du resultat dans un fichier
-		printGraph(graph, fileName);
+		//printGraph(graph, fileName);
+	}
+	
+	/**
+	 * Recherche une solution avec l'algorithme D-Sature.
+	 * @param fileName Le nom du fichier.
+	 */
+	public static void findDSatureSolution(String fileName) {
+		
+		Graph graph = new Graph(fileName);
+
+		// Coloration du graphe
+		colorate(graph, graph.expectedColorNumber);
+
+		// Affichage du graphe et enregistrement du resultat dans un fichier
+		//printGraph(graph, fileName);
 	}
 	
 	/**
 	 * Algrothme D-SATUR
-	 * @param g Le graphe.
+	 * 
+	 * @param g        Le graphe.
 	 * @param nbColors Le nombre de couleurs.
 	 */
-	public static void colorate(Graph g, int nbColors)
-	{
-		if (g.nodes.size() == 1)
-		{
+	private static void colorate(Graph g, int nbColors) {
+		if (g.nodes.size() == 1) {
 			g.nodes.get(0).color = 1;
-		} 
-		else
-		{
-			for (Node node : g.nodes)
-			{
-				if (node.color == 0)
-				{
+		} else {
+			for (Node node : g.nodes) {
+				if (node.color == 0) {
 					colorate(new Graph(g.nodes, node.value), nbColors);
 					node.setColor(nbColors);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Algorithme naïf
-	 * @param g Le graphe.
+	 * 
+	 * @param g        Le graphe.
 	 * @param nbColors Le nombre de couleurs.
 	 */
-	public static void colorateNaive(Graph g, int nbColors) 
-	{
+	public static void colorateNaive(Graph g, int nbColors) {
 		int i = 0, colorValue = 1;
 
-		while (i < g.nodes.size())
-		{
+		while (i < g.nodes.size()) {
 			Node n = g.nodes.get(i);
 
-			while (n.color == 0 && colorValue <= nbColors)
-			{
-				if (isValidColor(n, colorValue))
-				{
+			while (n.color == 0 && colorValue <= nbColors) {
+				if (isValidColor(n, colorValue)) {
 					n.color = colorValue;
 					colorValue = 1;
-				} 
-				else 
-				{
+				} else {
 					colorValue++;
 				}
-			}
 
-			if (n.color == 0)
-			{
-				if (i > 0)
-				{
+			}
+			System.out.println("Sommet : " + n.value + " Couleur :  " + n.color);
+
+			if (n.color == 0) {
+				if (i > 0) {
 					i--;
 				}
 
 				colorValue = g.nodes.get(i).color + 1;
 				g.nodes.get(i).color = 0;
-			} 
-			else
-			{
+			} else {
 				i++;
 			}
 		}
@@ -94,15 +96,13 @@ public class Main_File {
 
 	/**
 	 * Vérifie qu'une couleur est valide.
-	 * @param n Le sommet.
+	 * 
+	 * @param n          Le sommet.
 	 * @param colorValue La couleur.
 	 */
-	public static boolean isValidColor(Node n, int colorValue)
-	{
-		for (Node neighbor : n.neighbors)
-		{
-			if (neighbor.color == colorValue)
-			{
+	private static boolean isValidColor(Node n, int colorValue) {
+		for (Node neighbor : n.neighbors) {
+			if (neighbor.color == colorValue) {
 				return false;
 			}
 		}
@@ -112,13 +112,12 @@ public class Main_File {
 
 	/**
 	 * Affiche le graphe et l'enregistre dans le dossier prévu.
-	 * @param g1 Le graphe.
+	 * 
+	 * @param g1       Le graphe.
 	 * @param filename Le nom du fichier.
 	 */
-	private static void printGraph(Graph g1, String filename)
-	{
-		try
-		{
+	private static void printGraph(Graph g1, String filename) {
+		try {
 			String rootDir = System.getProperty("user.dir");
 			filename = FilenameUtils.getBaseName(filename);
 
@@ -133,9 +132,7 @@ public class Main_File {
 
 			System.out.println("Fichier '" + filename + "_generated.txt' généré avec succès ! ");
 			file.close();
-		}
-		catch(Exception e) 
-		{
+		} catch (Exception e) {
 			System.out.println("Erreur d'enregistrement du résultat : " + e.getMessage());
 			e.printStackTrace();
 		}

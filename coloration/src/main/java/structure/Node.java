@@ -1,4 +1,4 @@
-package com.uds.coloration;
+package structure;
 
 import java.util.ArrayList;
 
